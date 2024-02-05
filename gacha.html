@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gacha Game</title>
+    <style>
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Mai Na Gioia!</h1>
+        <p>Clicca il pulsante e prova ad ottenere una gioia.</p>
+        <button class="button" onclick="pullGacha()">Pull</button>
+        <div id="result"></div>
+        <div id="stats"></div>
+    </div>
+
+    <script>
+        // Define the list of items with their weights
+        var items = [
+            {name: 'Kafka', weight: 10},
+            {name: 'UwU', weight: 5},
+            {name: 'Pingu', weight: 20},
+            {name: 'Chapa Chapa', weight: 15},
+            // Add more items here...
+            {name: 'Gioia', weight: 2},
+            {name: 'Ghalad', weight: 3},
+            {name: 'Chipi Chipi', weight: 15}
+        ];
+
+        var pulledItems = [];
+
+        // Function to pull from the gacha
+        function pullGacha() {
+            var totalWeight = items.reduce((acc, item) => acc + item.weight, 0);
+            var randomNumber = Math.floor(Math.random() * totalWeight);
+            
+            var cumulativeWeight = 0;
+            for (var i = 0; i < items.length; i++) {
+                cumulativeWeight += items[i].weight;
+                if (randomNumber < cumulativeWeight) {
+                    var pulledItem = items[i].name;
+                    pulledItems.push(pulledItem);
+                    document.getElementById('result').innerText = 'Hai Trovato: ' + pulledItem;
+                    break;
+                }
+            }
+            displayStatistics();
+        }
+
+        // Function to display statistics
+        function displayStatistics() {
+            var stats = {};
+            pulledItems.forEach(item => {
+                stats[item] = (stats[item] || 0) + 1;
+            });
+
+            var statsText = 'Statistiche:<br>';
+            for (var key in stats) {
+                if (stats.hasOwnProperty(key)) {
+                    statsText += key + ': ' + stats[key] + '<br>';
+                }
+            }
+
+            document.getElementById('stats').innerHTML = statsText;
+        }
+    </script>
+</body>
+</html>
